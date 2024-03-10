@@ -9,7 +9,7 @@ import (
 
 func main() {
 	obuIDs := obu.GenerateOBUIDs(20)
-	conn, _, err := websocket.DefaultDialer.Dial("ws://localhost:8080", nil)
+	conn, _, err := websocket.DefaultDialer.Dial("ws://localhost:8080/ws", nil)
 	if err != nil {
 		log.Fatal(err)
 	}

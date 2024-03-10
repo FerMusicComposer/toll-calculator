@@ -7,16 +7,11 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/FerMusicComposer/toll-calculator/models"
 	"github.com/gorilla/websocket"
 )
 
 const sendInterval = 2
-
-type OBUData struct {
-	OBUID     int     `json:"obuID"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-}
 
 func GenerateCoordinate() float64 {
 	intPart := float64(rand.Intn(100) + 1)
@@ -41,7 +36,7 @@ func GenerateOBUIDs(numOfIDs int) []int {
 func GenerateData(obuIDs []int, conn *websocket.Conn) {
 	for i := 0; i < len(obuIDs); i++ {
 		lat, long := GenerateLocation()
-		obu := OBUData{
+		obu := models.OBUData{
 			OBUID:     obuIDs[i],
 			Latitude:  lat,
 			Longitude: long,
