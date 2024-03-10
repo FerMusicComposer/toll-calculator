@@ -1,13 +1,18 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
-	dataRec "github.com/FerMusicComposer/toll-calculator/data-receiver/pkg"
+	dr "github.com/FerMusicComposer/toll-calculator/data-receiver/pkg"
 )
 
 func main() {
-	dataReceiver := dataRec.NewDataReceiver()
+
+	dataReceiver, err := dr.NewDataReceiver()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	http.HandleFunc("/ws", dataReceiver.WebsocketHandler)
 	http.ListenAndServe(":8080", nil)

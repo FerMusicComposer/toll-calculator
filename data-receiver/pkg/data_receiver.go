@@ -12,12 +12,24 @@ import (
 type DataReceiver struct {
 	msgch chan models.OBUData
 	conn  *websocket.Conn
+
+	prod DataProducer
 }
 
-func NewDataReceiver() *DataReceiver {
+func NewDataReceiver() (*DataReceiver, error) {
+	prod, err := NewKafkaProducer()
+	if err != nil {
+		return nil, err
+	}
+
 	return &DataReceiver{
 		msgch: make(chan models.OBUData, 128),
-	}
+		prod:  prod,
+	}, nil
+}
+
+func (dataRec *DataReceiver) produceData(data models.OBUData) error {
+	return dataRec.prod.ProduceData(data)
 }
 
 func (dataRec *DataReceiver) websocketReceiveData() {
@@ -28,9 +40,11 @@ func (dataRec *DataReceiver) websocketReceiveData() {
 			log.Println("Error reading JSON:", err)
 			continue
 		}
-		fmt.Printf("Received OBU data from [%d] :: <lat: %.2f, long: %.2f>\n", data.OBUID, data.Latitude, data.Longitude)
-		dataRec.msgch <- data
 
+		err := dataRec.produceData(data)
+		if err != nil {
+			log.Println("Error producing data:", err)
+		}
 	}
 }
 
