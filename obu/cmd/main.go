@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/FerMusicComposer/toll-calculator/obu/pkg/obu"
+	obu "github.com/FerMusicComposer/toll-calculator/obu/pkg"
 	"github.com/gorilla/websocket"
 )
 
