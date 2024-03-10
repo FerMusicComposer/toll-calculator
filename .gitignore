@@ -1,0 +1,32 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+!**/vendor/bin/
+
+# Test binary, built with `go test -c`
+*.test
+
+
+# VSCode
+.vscode/
+
+
+# Temporary files
+tmp/
+temp/
+
+# Logs
+logs/
+*.log
+
+# Environment files
+.env
+
+
+# Others
+*.swp
+*~
