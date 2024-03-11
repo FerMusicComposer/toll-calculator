@@ -9,7 +9,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-const kafkaTopic string = "obu-data"
+const kafkaTopic = "obu-data"
 
 type DataProducer interface {
 	ProduceData(data models.OBUData) error
