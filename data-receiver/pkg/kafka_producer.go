@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/FerMusicComposer/toll-calculator/models"
-	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 const kafkaTopic = "obu-data"
