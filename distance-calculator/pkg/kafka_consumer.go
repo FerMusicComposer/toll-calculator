@@ -13,10 +13,10 @@ const kafkaTopic = "obu-data"
 type kafkaconsumer struct {
 	consumer          *kafka.Consumer
 	isRunning         bool
-	calculatorService DistCalculator
+	calculatorService DistanceMeasurer
 }
 
-func NewKafkaConsumer(svc DistCalculator) (*kafkaconsumer, error) {
+func NewKafkaConsumer(svc DistanceMeasurer) (*kafkaconsumer, error) {
 	topic := kafkaTopic
 
 	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
