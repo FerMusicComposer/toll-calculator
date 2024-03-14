@@ -6,7 +6,7 @@ import (
 	"github.com/FerMusicComposer/toll-calculator/models"
 )
 
-type DistanceMeasurer interface {
+type DistCalculator interface {
 	CalculateDistance(models.OBUData) (float64, error)
 }
 
@@ -14,7 +14,7 @@ type DistanceCalculator struct {
 	prevpoint []float64
 }
 
-func NewDistanceCalculator() DistanceMeasurer {
+func NewDistanceCalculator() DistCalculator {
 	return &DistanceCalculator{}
 }
 

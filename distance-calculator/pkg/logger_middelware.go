@@ -8,10 +8,10 @@ import (
 )
 
 type LoggerMiddlewware struct {
-	next DistanceMeasurer
+	next DistCalculator
 }
 
-func NewLoggerMiddleware(next DistanceMeasurer) DistanceMeasurer {
+func NewLoggerMiddleware(next DistCalculator) DistCalculator {
 	return &LoggerMiddlewware{next: next}
 }
 

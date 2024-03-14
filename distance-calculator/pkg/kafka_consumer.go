@@ -3,7 +3,9 @@ package distancecalculator
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
+	da "github.com/FerMusicComposer/toll-calculator/distance-aggregator/pkg"
 	"github.com/FerMusicComposer/toll-calculator/models"
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
@@ -13,10 +15,11 @@ const kafkaTopic = "obu-data"
 type kafkaconsumer struct {
 	consumer          *kafka.Consumer
 	isRunning         bool
-	calculatorService DistanceMeasurer
+	calculatorService DistCalculator
+	aggClient         *da.Client
 }
 
-func NewKafkaConsumer(svc DistanceMeasurer) (*kafkaconsumer, error) {
+func NewKafkaConsumer(svc DistCalculator, aggClient *da.Client) (*kafkaconsumer, error) {
 	topic := kafkaTopic
 
 	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
@@ -33,6 +36,7 @@ func NewKafkaConsumer(svc DistanceMeasurer) (*kafkaconsumer, error) {
 	return &kafkaconsumer{
 		consumer:          consumer,
 		calculatorService: svc,
+		aggClient:         aggClient,
 	}, nil
 }
 
@@ -57,6 +61,17 @@ func (kafkaCons *kafkaconsumer) ConsumeData() error {
 		distance, err := kafkaCons.calculatorService.CalculateDistance(data)
 		if err != nil {
 			fmt.Printf("Error calculating distance: %v\n", err)
+			continue
+		}
+
+		req := models.Distance{
+			Value: distance,
+			OBUID: data.OBUID,
+			Unix:  time.Now().UnixNano(),
+		}
+
+		if err := kafkaCons.aggClient.AggregateDistance(req); err != nil {
+			fmt.Printf("Error aggregating distance: %v\n", err)
 			continue
 		}
 

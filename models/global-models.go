@@ -9,6 +9,11 @@ type OBUData struct {
 	Longitude float64 `json:"longitude"`
 }
 
-//=====================
-// DATA RECEIVER TYPES
-//=====================
+//=========================
+// INVOICE AGREGATOR TYPES
+//=========================
+type Distance struct {
+	Value float64 `json:"value"`
+	OBUID int     `json:"obuID"`
+	Unix  int64   `json:"unix"`
+}
